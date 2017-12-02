@@ -1,7 +1,6 @@
 package main.model;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.util.StringUtil;
 
 public class Row {
     private String description;
@@ -21,7 +20,7 @@ public class Row {
     }
 
     public Row(String[] values) {
-        this.description = values[0];
+        this.description = values[0].replaceAll("\\[ +", "");
         this.code = Integer.parseInt(StringUtils.remove(values[1], ' '));
         this.previousBalance = Float.parseFloat(StringUtils.remove(values[2], ' ').replace(".", "").replace(',', '.'));
         this.previousDebt = Float.parseFloat(StringUtils.remove(values[3], ' ').replace(".", "").replace(',', '.'));

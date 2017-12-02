@@ -1,7 +1,6 @@
 package main.view;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main extends JFrame{
     public JPanel getMainPanel() {
@@ -30,5 +29,4 @@ public class Main extends JFrame{
         this.pack();
         this.setVisible(true);
     }
-
 }

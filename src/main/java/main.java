@@ -1,7 +1,6 @@
 import main.controller.MainController;
 import main.view.Main;
 
-import javax.swing.*;
 
 public class main {
     public static void main(String[] args) {
