@@ -15,6 +15,8 @@ public class Main extends JFrame{
     private JButton clearRowButton;
     private JButton graphicButton;
     private JButton saveButton;
+    private JComboBox graphicComboBox;
+    private JLabel graphicTypeLabel;
     private DefaultTableModel tModel;
 
     public Main() {
@@ -96,4 +98,16 @@ public class Main extends JFrame{
     public void setSaveButton(JButton saveButton) {
         this.saveButton = saveButton;
     }
+
+    public JComboBox getGraphicComboBox() {
+        return graphicComboBox;
+    }
+
+    public void setGraphicComboBox(JComboBox graphicComboBox) {
+        this.graphicComboBox = graphicComboBox;
+    }
+
+    public JLabel getGraphicTypeLabel() { return graphicTypeLabel; }
+
+    public void setGraphicTypeLabel(JLabel graphicTypeLabel) { this.graphicTypeLabel = graphicTypeLabel; }
 }
