@@ -22,7 +22,9 @@
         <constraints>
           <grid row="2" column="1" row-span="4" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-12828863"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="fedf7" class="javax.swing.JTable" binding="table">

@@ -33,6 +33,8 @@ public class MainController implements ActionListener{
         this.mainView.getImportButton().addActionListener(this);
         this.mainView.getAddRowButton().addActionListener(this);
         this.mainView.getClearRowButton().addActionListener(this);
+        this.mainView.getSaveButton().addActionListener(this);
+        this.mainView.getGraphicButton().addActionListener(this);
 
     }
 
@@ -113,6 +115,16 @@ public class MainController implements ActionListener{
                 ((DefaultTableModel) this.mainView.getTable().getModel()).removeRow(this.mainView.getTable().getSelectedRow());
                 this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             }
+        }
+
+        if (actionEvent.getSource() == this.mainView.getSaveButton()){
+            //IMPLEMENTAR AQUI A LÓGICA PARA SALVAR
+            System.out.println("save");
+        }
+
+        if (actionEvent.getSource() == this.mainView.getGraphicButton()){
+            //IMPLEMENTAR AQUI A LÓGICA DO GRÁFICO
+            System.out.println("graphic");
         }
     }
 }

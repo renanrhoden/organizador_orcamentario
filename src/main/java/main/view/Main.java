@@ -4,8 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Main extends JFrame{
@@ -30,8 +28,8 @@ public class Main extends JFrame{
         this.scrollP.setViewportView(this.table);
         try {
             this.importButton.setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("importTable.png"))));
-            this.graphicButton.setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("graphic.png"))));
-            this.saveButton.setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("save.png"))));
+            this.getGraphicButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("graphic.png"))));
+            this.getSaveButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("save.png"))));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,4 +81,19 @@ public class Main extends JFrame{
 
     public void setClearRowButton(JButton clearRowButton) { this.clearRowButton = clearRowButton; }
 
+    public JButton getGraphicButton() {
+        return graphicButton;
+    }
+
+    public void setGraphicButton(JButton graphicButton) {
+        this.graphicButton = graphicButton;
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
+
+    public void setSaveButton(JButton saveButton) {
+        this.saveButton = saveButton;
+    }
 }
