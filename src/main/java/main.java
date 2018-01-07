@@ -1,3 +1,5 @@
+import chart.Chart;
+import chart.PieChart;
 import main.controller.MainController;
 import main.view.Main;
 
@@ -8,5 +10,7 @@ public class main {
         Main frame = new Main();
         new MainController(frame);
         frame.setVisible(true);
+        JFrame chart = Chart.crateChart();
+        chart.setVisible(true);
     }
 }
