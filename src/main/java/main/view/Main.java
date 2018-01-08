@@ -7,6 +7,7 @@ import javax.swing.table.TableModel;
 import java.io.IOException;
 
 public class Main extends JFrame{
+    public static final String CODIGO = "Código";
     private JPanel mainPanel;
     private JButton importButton;
     private JTable table;
@@ -19,12 +20,15 @@ public class Main extends JFrame{
     private JLabel graphicTypeLabel;
     private DefaultTableModel tModel;
 
+    public static final String PIE_CHART = "Pizza";
+    public static final String BAR_CHART = "Barras";
+
     public Main() {
         this.setTitle("main");
         this.setContentPane(mainPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
-        this.tModel = new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"});
+        this.tModel = new DefaultTableModel(null, new Object[]{"Nome", CODIGO, "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"});
         this.table = new JTable(this.tModel);
         this.table.setFillsViewportHeight(true);
         this.scrollP.setViewportView(this.table);
@@ -36,6 +40,8 @@ public class Main extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.graphicComboBox.addItem(PIE_CHART);
+        this.graphicComboBox.addItem(BAR_CHART);
         this.setVisible(true);
 
     }

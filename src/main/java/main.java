@@ -1,3 +1,5 @@
+import chart.Chart;
+import chart.PieChart;
 import main.controller.MainController;
 import main.view.Main;
 

@@ -1,15 +1,13 @@
 package main.controller;
 
+import chart.PieChart;
 import com.opencsv.CSVReader;
 import main.model.Row;
 import main.view.Main;
-import main.view.AddRow;
+import org.jfree.data.io.CSV;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,9 +15,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import javax.swing.JScrollPane;
+import java.util.List;
 
-public class MainController implements ActionListener{
+import static main.view.Main.PIE_CHART;
+
+public class MainController implements ActionListener {
 
 
     final JFileChooser fc = new JFileChooser();
@@ -48,7 +48,7 @@ public class MainController implements ActionListener{
                 System.out.println("Opening: " + file.getName() + ".");
                 CSVReader reader = null;
                 try {
-                    reader = new CSVReader(new FileReader(file), ',' , '"' , 1);
+                    reader = new CSVReader(new FileReader(file), ',', '"', 1);
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
@@ -66,6 +66,7 @@ public class MainController implements ActionListener{
                             if (values.length == 7) {
                                 Row row = new Row(values);
                                 //System.out.println(row);
+                                CSVData.getInstance().getData().add(row);
 
                                 //Adiciona uma linha na tabela
                                 tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCradit(), row.getCurrentBalance()});
@@ -89,9 +90,9 @@ public class MainController implements ActionListener{
             }
         }
 
-        if (actionEvent.getSource() == this.mainView.getAddRowButton()){
+        if (actionEvent.getSource() == this.mainView.getAddRowButton()) {
 
-            if (this.mainView.getTable().getSelectedRow() != -1){
+            if (this.mainView.getTable().getSelectedRow() != -1) {
                 ((DefaultTableModel) this.mainView.getTable().getModel()).insertRow(this.mainView.getTable().getSelectedRow() + 1, (Object[]) null);
                 this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             } else {
@@ -110,20 +111,41 @@ public class MainController implements ActionListener{
             }*/
         }
 
-        if(actionEvent.getSource() == this.mainView.getClearRowButton()){
-            if(this.mainView.getTable().getSelectedRow() != -1) {
+        if (actionEvent.getSource() == this.mainView.getClearRowButton()) {
+            if (this.mainView.getTable().getSelectedRow() != -1) {
                 ((DefaultTableModel) this.mainView.getTable().getModel()).removeRow(this.mainView.getTable().getSelectedRow());
                 this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             }
         }
 
-        if (actionEvent.getSource() == this.mainView.getSaveButton()){
+        if (actionEvent.getSource() == this.mainView.getSaveButton()) {
             //IMPLEMENTAR AQUI A LÓGICA PARA SALVAR
             System.out.println("save");
         }
 
-        if (actionEvent.getSource() == this.mainView.getGraphicButton()){
+        if (actionEvent.getSource() == this.mainView.getGraphicButton()) {
             //IMPLEMENTAR AQUI A LÓGICA DO GRÁFICO
+            String option = (String) (this.mainView.getGraphicComboBox().getSelectedItem());
+
+            switch (option) {
+                case PIE_CHART:
+                    if (CSVData.getInstance().getData() != null){
+                        List<Row> rows =  CSVData.getInstance().getData();
+                        for (Row row:
+                                rows) {
+                            if(row.getCode() == 100){
+                                PieChart pieChart = new PieChart();
+                                pieChart.add("Débito Anterior", row.getPreviousDebt());
+                                pieChart.add("Credito Anterior", row.getPreviousCradit());
+                                pieChart.add("Balanço Atual", row.getCurrentBalance());
+                                pieChart.show();
+                            }
+                        }
+                    }
+                    System.out.println("pegou np pie");
+                    break;
+
+            }
             System.out.println("graphic");
         }
     }

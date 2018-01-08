@@ -12,6 +12,7 @@
     <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml:3.17" level="project" />
     <orderEntry type="library" name="Gradle: com.opencsv:opencsv:4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.jfree:jfreechart:1.5.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml-schemas:3.17" level="project" />
     <orderEntry type="library" name="Gradle: com.github.virtuald:curvesapi:1.04" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-text:1.1" level="project" />
