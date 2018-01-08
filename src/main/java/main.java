@@ -10,7 +10,5 @@ public class main {
         Main frame = new Main();
         new MainController(frame);
         frame.setVisible(true);
-        JFrame chart = Chart.crateChart();
-        chart.setVisible(true);
     }
 }

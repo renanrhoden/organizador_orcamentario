@@ -15,14 +15,14 @@ public class Chart {
     static DefaultPieDataset data = new DefaultPieDataset();
 
 
-    public static JFrame crateChart() {
-        data.setValue("mercado", 160);
-        data.setValue("farmacia", 160);
-        data.setValue("escola", 160);
-        data.setValue("livraria", 160);
-        data.setValue("combustivel", 160);
+    public static JFrame crateChart(DefaultPieDataset data) {
+//        data.setValue("mercado", 160);
+//        data.setValue("farmacia", 160);
+//        data.setValue("escola", 160);
+//        data.setValue("livraria", 160);
+//        data.setValue("combustivel", 160);
 
-        JFreeChart chart = createPieChart("Teste", data, true, false, false);
-        return new ChartFrame("Teste", chart);
+        JFreeChart chart = createPieChart("", data, true, false, false);
+        return new ChartFrame("Gráfico", chart);
     }
 }
