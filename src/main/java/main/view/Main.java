@@ -18,6 +18,7 @@ public class Main extends JFrame{
     private JButton saveButton;
     private JComboBox graphicComboBox;
     private JLabel graphicTypeLabel;
+    private JButton gerarTemplateButton;
     private DefaultTableModel tModel;
 
     public static final String PIE_CHART = "Pizza";
@@ -41,7 +42,6 @@ public class Main extends JFrame{
             e.printStackTrace();
         }
         this.graphicComboBox.addItem(PIE_CHART);
-        this.graphicComboBox.addItem(BAR_CHART);
         this.setVisible(true);
 
     }
@@ -116,4 +116,8 @@ public class Main extends JFrame{
     public JLabel getGraphicTypeLabel() { return graphicTypeLabel; }
 
     public void setGraphicTypeLabel(JLabel graphicTypeLabel) { this.graphicTypeLabel = graphicTypeLabel; }
+
+    public JButton getGerarTemplateButton() {
+        return gerarTemplateButton;
+    }
 }

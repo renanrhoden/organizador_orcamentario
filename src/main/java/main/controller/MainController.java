@@ -10,12 +10,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import static main.view.Main.PIE_CHART;
 
@@ -35,6 +36,7 @@ public class MainController implements ActionListener {
         this.mainView.getClearRowButton().addActionListener(this);
         this.mainView.getSaveButton().addActionListener(this);
         this.mainView.getGraphicButton().addActionListener(this);
+        this.mainView.getGerarTemplateButton().addActionListener(this);
 
     }
 
@@ -142,11 +144,28 @@ public class MainController implements ActionListener {
                             }
                         }
                     }
-                    System.out.println("pegou np pie");
                     break;
 
             }
             System.out.println("graphic");
         }
+
+        if (actionEvent.getSource() == mainView.getGerarTemplateButton()){
+            JFileChooser chooser = new JFileChooser();
+            int retrival = chooser.showSaveDialog(null);
+            if (retrival == JFileChooser.APPROVE_OPTION){
+                try {
+                    FileWriter writer = new FileWriter(chooser.getSelectedFile() + " .csv");
+                    Scanner scanner = new Scanner(Thread.currentThread().getContextClassLoader().getResourceAsStream("template.csv"));
+                    String csvFile = scanner.useDelimiter("%A").next();
+                    writer.write(csvFile);
+                    writer.flush();
+                    writer.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
+
