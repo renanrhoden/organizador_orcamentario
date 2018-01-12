@@ -50,7 +50,7 @@ public class MainController implements ActionListener {
                 System.out.println("Opening: " + file.getName() + ".");
                 CSVReader reader = null;
                 try {
-                    reader = new CSVReader(new FileReader(file), ',', '"', 1);
+                    reader = new CSVReader(new FileReader(file), ';', '"', 1);
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
@@ -63,10 +63,8 @@ public class MainController implements ActionListener {
                 try {
                     while ((nextLine = reader.readNext()) != null) {
                         if (nextLine != null) {
-                            String[] values = Arrays.toString(nextLine).split(";");
-
-                            if (values.length == 7) {
-                                Row row = new Row(values);
+                            if (nextLine.length == 7) {
+                                Row row = new Row(nextLine);
                                 //System.out.println(row);
                                 CSVData.getInstance().getData().add(row);
 
