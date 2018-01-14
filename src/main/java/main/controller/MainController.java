@@ -120,7 +120,12 @@ public class MainController implements ActionListener {
 
         if (actionEvent.getSource() == this.mainView.getSaveButton()) {
             //IMPLEMENTAR AQUI A LÓGICA PARA SALVAR
-            System.out.println("save");
+            //System.out.println("save");
+            DB_Row dbrow = new DB_Row();
+
+            Row row = new Row("Dummy", 54321, 500.3, 200.1, 400.2, 700.53, true, 10.3, 2018, 11);
+
+            dbrow.insertRow(row);
         }
 
         if (actionEvent.getSource() == this.mainView.getGraphicButton()) {

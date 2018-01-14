@@ -10,14 +10,22 @@ public class Row {
     private float previousDebt;
     private float previousCradit;
     private float currentBalance;
+    private boolean isPercent;
+    private float valueChange;
+    private int year;
+    private int month;
 
-    public Row(String description, int code, float previousBalance, float previousDebt, float previousCradit, float currentBalance) {
+    public Row(String description, int code, float previousBalance, float previousDebt, float previousCradit, float currentBalance, boolean isPercent, float valueChange, int year, int month) {
         this.description = description;
         this.code = code;
         this.previousBalance = previousBalance;
         this.previousDebt = previousDebt;
         this.previousCradit = previousCradit;
         this.currentBalance = currentBalance;
+        this.isPercent = isPercent;
+        this.valueChange = valueChange;
+        this.year = year;
+        this.month = month;
     }
 
     public Row(String[] values) {
@@ -27,6 +35,10 @@ public class Row {
         this.previousDebt = Float.parseFloat(StringUtils.remove(values[3], ' ').replace(".", "").replace(',', '.'));
         this.previousCradit = Float.parseFloat(StringUtils.remove(values[4], ' ').replace(".", "").replace(',', '.'));
         this.currentBalance = Float.parseFloat(StringUtils.remove(values[5], ' ').replace(".", "").replace(',', '.'));
+        this.isPercent = NULL;
+        this.valueChange = NULL;
+        this.year = NULL;
+        this.month = NULL;
     }
 
     public String getDescription() {
@@ -76,6 +88,38 @@ public class Row {
 
     public void setCurrentBalance(float currentBalance) {
         this.currentBalance = currentBalance;
+    }
+
+    public boolean getIsPercent(){
+        return isPercent;
+    }
+
+    public void setIsPercent(boolean isPercent){
+        this.isPercent = isPercent;
+    }
+
+    public float getValueChange(){
+        return valueChange;
+    }
+    
+    public void setValueChange(float valueChange){
+        this.valueChange = valueChange;
+    }
+
+    public int getYear(){
+        return year;
+    }
+    
+    public void setYear(int year){
+        this.year = year;
+    }
+
+    public int getMonth(){
+        return month;
+    }
+    
+    public void setMonth(int month){
+        this.month = month;
     }
 
     @Override
