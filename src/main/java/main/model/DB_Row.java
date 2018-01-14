@@ -1,5 +1,12 @@
+package main.model;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+
 
 public class DB_Row{
 	private Connection connection;
@@ -8,14 +15,14 @@ public class DB_Row{
 		connection = null;	
 	}
 
-	private void openConnection(){
+	private void openConnection() throws SQLException{
 		connection = null;
 		try{
 			Class.forName("org.postgresql.Driver");
 			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432:orcamento", "postgres", "postgres");
 		}catch (Exception e){
 			e.printStackTrace();
-			System.err.println(e.getClass()e.getName() + ":  " + e.getMessage());
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
 			System.exit(0);
 		}
 		System.out.println("Opened DB");
@@ -23,7 +30,7 @@ public class DB_Row{
 		connection.setAutoCommit(false);
 	}
 
-	private void closeConnection(){
+	private void closeConnection() throws SQLException{
 		connection.close();
 	}
 
@@ -43,7 +50,7 @@ public class DB_Row{
 			sql_ins.setString(2, rubrica.getDescription());
 			sql_ins.setDouble(3, rubrica.getPreviousBalance());
 			sql_ins.setDouble(4, rubrica.getPreviousDebt());
-			sql_ins.setDouble(5, rubrica.getPreviousCredit());
+			sql_ins.setDouble(5, rubrica.getPreviousCradit());
 			sql_ins.setBoolean(6, rubrica.getIsPercent());
 			sql_ins.setDouble(7, rubrica.getValueChange());
 			sql_ins.setInt(8, rubrica.getYear());
@@ -56,7 +63,7 @@ public class DB_Row{
 			this.closeConnection();
 		}catch(SQLException e){
 			e.printStackTrace();
-			System.err.println(e.getClass()e.getName() + ":  " + e.getMessage());
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
 		}
 
 		return res;
@@ -80,7 +87,7 @@ public class DB_Row{
 
 		}catch(SQLException e){
 			e.printStackTrace();
-			System.err.println(e.getClass()e.getName() + ":  " + e.getMessage());
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
 		}
 
 		return res;
@@ -113,7 +120,7 @@ public class DB_Row{
 			
 		}catch(SQLException e){
 			e.printStackTrace();
-			System.err.println(e.getClass()e.getName() + ":  " + e.getMessage());
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
 		}
 
 		return res;
