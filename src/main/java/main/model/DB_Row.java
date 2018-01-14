@@ -17,15 +17,18 @@ public class DB_Row{
 
 	private void openConnection() throws SQLException{
 		connection = null;
+		boolean error = false;
 		try{
 			Class.forName("org.postgresql.Driver");
-			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432:orcamento", "postgres", "postgres");
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/orcamento", "postgres", "postgres");
 		}catch (Exception e){
+			error = true;
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
 			System.exit(0);
 		}
-		System.out.println("Opened DB");
+		if (!error)
+			System.out.println("Opened DB");
 
 		connection.setAutoCommit(false);
 	}
@@ -40,8 +43,8 @@ public class DB_Row{
 		try{
 			this.openConnection();
 
-			String sql_str = "INSERT INTO rubrica (code, description, previousBalance, previousDebt, previousCredit, isPercent, valueChange, year, month) "
-			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql_str = "INSERT INTO public.rubrica (code, description, \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month, \"currentBalance\") "
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			// int, string, double, double, double, boolean, double, int, int
 
 			PreparedStatement sql_ins = connection.prepareStatement(sql_str);
@@ -55,6 +58,7 @@ public class DB_Row{
 			sql_ins.setDouble(7, rubrica.getValueChange());
 			sql_ins.setInt(8, rubrica.getYear());
 			sql_ins.setInt(9, rubrica.getMonth());
+			sql_ins.setDouble(10, rubrica.getCurrentBalance());
 
 			res = sql_ins.executeUpdate();
 
@@ -76,7 +80,7 @@ public class DB_Row{
 		try{
 			this.openConnection();
 
-			String sql_str = "SELECT (code, description, previousBalance, previousDebt, previousCredit, isPercent, valueChange, year, month) FROM rubrica "
+			String sql_str = "SELECT (code, description, \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
 			+ "ORDER BY year, month;";
 
 			PreparedStatement sql_qry = connection.prepareStatement(sql_str);
@@ -101,7 +105,7 @@ public class DB_Row{
 		try{
 			this.openConnection();
 
-			String sql_str = "SELECT (code, description, previousBalance, previousDebt, previousCredit, isPercent, valueChange, year, month) FROM rubrica "
+			String sql_str = "SELECT (code, description, \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
 			+ "WHERE ((year > ?) OR (year = ? AND month >= ?)) AND ((year < ?) OR (year = ? AND month <= ?))"
 			+ "ORDER BY year, month;";
 

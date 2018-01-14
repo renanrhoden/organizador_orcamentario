@@ -20,6 +20,8 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
     // https://mvnrepository.com/artifact/org.jfree/jfreechart
     compile group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
+    // https://mvnrepository.com/artifact/postgresql/postgresql
+    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
 
 
 }
