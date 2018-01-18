@@ -80,7 +80,7 @@ public class DB_Row{
 		try{
 			this.openConnection();
 
-			String sql_str = "SELECT (code, description, \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
+			String sql_str = "SELECT (code, description, \"currentBalance\", \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
 			+ "ORDER BY year, month;";
 
 			PreparedStatement sql_qry = connection.prepareStatement(sql_str);
@@ -105,7 +105,7 @@ public class DB_Row{
 		try{
 			this.openConnection();
 
-			String sql_str = "SELECT (code, description, \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
+			String sql_str = "SELECT (code, description, \"currentBalance\", \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
 			+ "WHERE ((year > ?) OR (year = ? AND month >= ?)) AND ((year < ?) OR (year = ? AND month <= ?))"
 			+ "ORDER BY year, month;";
 
