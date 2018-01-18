@@ -8,14 +8,14 @@ import org.jfree.data.io.CSV;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import static main.view.Main.PIE_CHART;
 
@@ -25,7 +25,7 @@ public class MainController implements ActionListener {
     final JFileChooser fc = new JFileChooser();
 
     private Main mainView;
-    private boolean isShowingAddWindow = false;
+    private int tabNumber = 1;
 
 
     public MainController(Main mainView) {
@@ -35,6 +35,9 @@ public class MainController implements ActionListener {
         this.mainView.getClearRowButton().addActionListener(this);
         this.mainView.getSaveButton().addActionListener(this);
         this.mainView.getGraphicButton().addActionListener(this);
+        this.mainView.getNovaAbaButton().addActionListener(this);
+        this.mainView.getGerarTemplateButton().addActionListener(this);
+
 
     }
 
@@ -56,8 +59,8 @@ public class MainController implements ActionListener {
                 //Read CSV line by line and use the string array as you want
                 String[] nextLine;
 
-                //Constrói um modelo de tabela vazia com os correspondentes nomes das colunas
                 DefaultTableModel tm = new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"});
+                //Constrói um modelo de tabela vazia com os correspondentes nomes das colunas
                 try {
                     while ((nextLine = reader.readNext()) != null) {
                         if (nextLine != null) {
@@ -76,10 +79,18 @@ public class MainController implements ActionListener {
 
                     }
 
-                    this.mainView.settModel(tm);
-                    this.mainView.setTable(new JTable(this.mainView.gettModel()));
-                    this.mainView.getTable().setFillsViewportHeight(true);
-                    this.mainView.getScrollP().setViewportView(this.mainView.getTable());
+                    //this.mainView.settModel(tm);
+                    //this.mainView.setTable(new JTable(this.mainView.gettModel()));
+                    //this.mainView.getTable().setGridColor(Color.black);
+                    //this.mainView.getTable().setFillsViewportHeight(true);
+                    //this.mainView.getScrollP().setViewportView(this.mainView.getTable());
+
+                    JTable tbl = new JTable(tm);
+                    tbl.setGridColor(Color.black);
+                    JScrollPane sclp = new JScrollPane(tbl);
+
+
+                    this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), sclp);
 
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -92,30 +103,33 @@ public class MainController implements ActionListener {
 
         if (actionEvent.getSource() == this.mainView.getAddRowButton()) {
 
-            if (this.mainView.getTable().getSelectedRow() != -1) {
-                ((DefaultTableModel) this.mainView.getTable().getModel()).insertRow(this.mainView.getTable().getSelectedRow() + 1, (Object[]) null);
-                this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
+            JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
+            JViewport v = scp.getViewport();
+            JTable t = (JTable) v.getView();
+
+            if (t.getSelectedRow() != -1) {
+                ((DefaultTableModel) t.getModel()).insertRow(t.getSelectedRow() + 1, (Object[]) null);
+                //this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             } else {
-                ((DefaultTableModel) this.mainView.getTable().getModel()).addRow((Object[]) null);
-                this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
+                ((DefaultTableModel) t.getModel()).addRow((Object[]) null);
+                //this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             }
 
-            /*
-            if(!this.isShowingAddWindow){
-                this.isShowingAddWindow = true;
-                AddRow addRowWindow = new AddRow();
-                JFrame fr = new JFrame();
-                fr.add(addRowWindow.getAddRowPanel());
-                fr.pack();
-                fr.setVisible(true);
-            }*/
+
+            this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
+
+
         }
 
         if (actionEvent.getSource() == this.mainView.getClearRowButton()) {
-            if (this.mainView.getTable().getSelectedRow() != -1) {
-                ((DefaultTableModel) this.mainView.getTable().getModel()).removeRow(this.mainView.getTable().getSelectedRow());
-                this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
+            JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
+            JViewport v = scp.getViewport();
+            JTable t = (JTable) v.getView();
+            if (t.getSelectedRow() != -1) {
+                ((DefaultTableModel) t.getModel()).removeRow(t.getSelectedRow());
+                //this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             }
+            this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
         }
 
         if (actionEvent.getSource() == this.mainView.getSaveButton()) {
@@ -146,7 +160,33 @@ public class MainController implements ActionListener {
                     break;
 
             }
-            System.out.println("graphic");
+
         }
+
+        if(actionEvent.getSource() == this.mainView.getNovaAbaButton()){
+            this.tabNumber++;
+            JTable t = new JTable(new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"}));
+            t.setGridColor(Color.black);
+            JScrollPane scrlp = new JScrollPane(t);
+            this.mainView.getTabbedPane().addTab("Tabela "+ this.tabNumber,scrlp);
+        }
+
+        if (actionEvent.getSource() == mainView.getGerarTemplateButton()){
+            JFileChooser chooser = new JFileChooser();
+            int retrival = chooser.showSaveDialog(null);
+            if (retrival == JFileChooser.APPROVE_OPTION){
+                try {
+                    FileWriter writer = new FileWriter(chooser.getSelectedFile() + " .csv");
+                    Scanner scanner = new Scanner(Thread.currentThread().getContextClassLoader().getResourceAsStream("template.csv"));
+                    String csvFile = scanner.useDelimiter("%A").next();
+                    writer.write(csvFile);
+                    writer.flush();
+                    writer.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }

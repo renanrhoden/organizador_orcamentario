@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
 import java.io.IOException;
 
 public class Main extends JFrame{
@@ -18,6 +19,9 @@ public class Main extends JFrame{
     private JButton saveButton;
     private JComboBox graphicComboBox;
     private JLabel graphicTypeLabel;
+    private JTabbedPane tabbedPane;
+    private JButton novaAbaButton;
+    private JButton gerarTemplateButton;
     private DefaultTableModel tModel;
 
     public static final String PIE_CHART = "Pizza";
@@ -27,21 +31,27 @@ public class Main extends JFrame{
         this.setTitle("main");
         this.setContentPane(mainPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
+
         this.tModel = new DefaultTableModel(null, new Object[]{"Nome", CODIGO, "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"});
         this.table = new JTable(this.tModel);
+        this.setTabbedPane(this.tabbedPane);
+        this.table.setGridColor(Color.black);
         this.table.setFillsViewportHeight(true);
         this.scrollP.setViewportView(this.table);
         try {
             this.importButton.setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("importTable.png"))));
             this.getGraphicButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("graphic.png"))));
             this.getSaveButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("save.png"))));
+            this.getNovaAbaButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("plus.png"))));
+            this.getGerarTemplateButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("templateCSV.png"))));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         this.graphicComboBox.addItem(PIE_CHART);
         this.graphicComboBox.addItem(BAR_CHART);
+        this.getTabbedPane().setComponentAt(0, this.getScrollP());
+        this.pack();
         this.setVisible(true);
 
     }
@@ -116,4 +126,16 @@ public class Main extends JFrame{
     public JLabel getGraphicTypeLabel() { return graphicTypeLabel; }
 
     public void setGraphicTypeLabel(JLabel graphicTypeLabel) { this.graphicTypeLabel = graphicTypeLabel; }
+
+    public JTabbedPane getTabbedPane() { return tabbedPane; }
+
+    public void setTabbedPane(JTabbedPane tabbedPane) { this.tabbedPane = tabbedPane; }
+
+    public JButton getNovaAbaButton() { return novaAbaButton; }
+
+    public void setNovaAbaButton(JButton novaAbaButton) { this.novaAbaButton = novaAbaButton; }
+
+    public JButton getGerarTemplateButton() { return gerarTemplateButton; }
+
+    public void setGerarTemplateButton(JButton gerarTemplateButton) { this.gerarTemplateButton = gerarTemplateButton; }
 }
