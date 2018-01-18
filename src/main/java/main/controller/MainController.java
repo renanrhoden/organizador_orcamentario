@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import static main.view.Main.PIE_CHART;
 
@@ -123,10 +124,19 @@ public class MainController implements ActionListener {
             //IMPLEMENTAR AQUI A LÓGICA PARA SALVAR
             //System.out.println("save");
             DB_Row dbrow = new DB_Row();
+            ArrayList<Row> rows;
 
-            Row row = new Row("Dummy", 54321, (float)500.3, (float)200.1, (float)400.2, (float)700.53, true, (float)10.3, 2018, 11, false, false);
+            Row row = new Row("Another Dummy", 322, (float)23.3, (float)50.1, (float)20.2, (float)10.53, false, (float)10.3, 2017, 11, false, false);
 
             dbrow.insertRow(row);
+
+            rows = dbrow.selectDate(2018, 11);
+
+            for (int i = 0; i < rows.size(); i++){
+                System.out.println(rows.get(i).toString());
+            }
+
+
         }
 
         if (actionEvent.getSource() == this.mainView.getGraphicButton()) {

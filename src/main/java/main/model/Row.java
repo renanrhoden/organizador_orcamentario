@@ -142,11 +142,18 @@ public class Row {
     @Override
     public String toString() {
         String space = ";  ";
+
         return description + space
                 + code + space
                 + previousBalance + space
                 + previousDebt + space
                 + previousCredit + space
-                + currentBalance;
+                + currentBalance + space
+                + isPercent + space
+                + valueChange + space
+                + year + space
+                + month + space
+                + updated + space
+                + loaded + space;
     }
 }
