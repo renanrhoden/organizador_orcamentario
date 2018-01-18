@@ -4,6 +4,7 @@ import chart.PieChart;
 import com.opencsv.CSVReader;
 import main.model.Row;
 import main.view.Main;
+import main.model.DB_Row;
 import org.jfree.data.io.CSV;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import static main.view.Main.PIE_CHART;
 
@@ -74,7 +76,7 @@ public class MainController implements ActionListener {
                                 CSVData.getInstance().getData().add(row);
 
                                 //Adiciona uma linha na tabela
-                                tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCradit(), row.getCurrentBalance()});
+                                tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCredit(), row.getCurrentBalance()});
                             }
                         }
 
@@ -136,7 +138,21 @@ public class MainController implements ActionListener {
 
         if (actionEvent.getSource() == this.mainView.getSaveButton()) {
             //IMPLEMENTAR AQUI A LÓGICA PARA SALVAR
-            System.out.println("save");
+            //System.out.println("save");
+            DB_Row dbrow = new DB_Row();
+            ArrayList<Row> rows;
+
+            Row row = new Row("Another Dummy", 322, (float)23.3, (float)50.1, (float)20.2, (float)10.53, false, (float)10.3, 2017, 11, false, false);
+
+            dbrow.insertRow(row);
+
+            rows = dbrow.selectDate(2018, 11);
+
+            for (int i = 0; i < rows.size(); i++){
+                System.out.println(rows.get(i).toString());
+            }
+
+
         }
 
         if (actionEvent.getSource() == this.mainView.getGraphicButton()) {
@@ -152,7 +168,7 @@ public class MainController implements ActionListener {
                             if(row.getCode() == 100){
                                 PieChart pieChart = new PieChart();
                                 pieChart.add("Débito Anterior", row.getPreviousDebt());
-                                pieChart.add("Credito Anterior", row.getPreviousCradit());
+                                pieChart.add("Credito Anterior", row.getPreviousCredit());
                                 pieChart.add("Balanço Atual", row.getCurrentBalance());
                                 pieChart.show();
                             }
