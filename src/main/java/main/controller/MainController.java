@@ -37,6 +37,7 @@ public class MainController implements ActionListener {
         this.mainView.getGraphicButton().addActionListener(this);
         this.mainView.getNovaAbaButton().addActionListener(this);
         this.mainView.getGerarTemplateButton().addActionListener(this);
+        this.mainView.getRemoverAbaButton().addActionListener(this);
 
 
     }
@@ -185,6 +186,12 @@ public class MainController implements ActionListener {
                 } catch (IOException e){
                     e.printStackTrace();
                 }
+            }
+        }
+
+        if (actionEvent.getSource() == this.mainView.getRemoverAbaButton()){
+            if (this.mainView.getTabbedPane().getSelectedIndex() != 0){
+                this.mainView.getTabbedPane().removeTabAt(this.mainView.getTabbedPane().getSelectedIndex());
             }
         }
 

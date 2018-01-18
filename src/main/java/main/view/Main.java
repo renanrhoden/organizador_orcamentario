@@ -22,6 +22,7 @@ public class Main extends JFrame{
     private JTabbedPane tabbedPane;
     private JButton novaAbaButton;
     private JButton gerarTemplateButton;
+    private JButton removerAbaButton;
     private DefaultTableModel tModel;
 
     public static final String PIE_CHART = "Pizza";
@@ -44,6 +45,7 @@ public class Main extends JFrame{
             this.getSaveButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("save.png"))));
             this.getNovaAbaButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("plus.png"))));
             this.getGerarTemplateButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("templateCSV.png"))));
+            this.getRemoverAbaButton().setIcon(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResource("minus.png"))));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,4 +140,8 @@ public class Main extends JFrame{
     public JButton getGerarTemplateButton() { return gerarTemplateButton; }
 
     public void setGerarTemplateButton(JButton gerarTemplateButton) { this.gerarTemplateButton = gerarTemplateButton; }
+
+    public JButton getRemoverAbaButton() { return removerAbaButton; }
+
+    public void setRemoverAbaButton(JButton removerAbaButton) { this.removerAbaButton = removerAbaButton; }
 }
