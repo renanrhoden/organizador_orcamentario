@@ -69,7 +69,7 @@ public class MainController implements ActionListener {
                                 CSVData.getInstance().getData().add(row);
 
                                 //Adiciona uma linha na tabela
-                                tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCradit(), row.getCurrentBalance()});
+                                tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCredit(), row.getCurrentBalance()});
                             }
                         }
 
@@ -141,7 +141,7 @@ public class MainController implements ActionListener {
                             if(row.getCode() == 100){
                                 PieChart pieChart = new PieChart();
                                 pieChart.add("Débito Anterior", row.getPreviousDebt());
-                                pieChart.add("Credito Anterior", row.getPreviousCradit());
+                                pieChart.add("Credito Anterior", row.getPreviousCredit());
                                 pieChart.add("Balanço Atual", row.getCurrentBalance());
                                 pieChart.show();
                             }

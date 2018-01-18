@@ -53,7 +53,7 @@ public class DB_Row{
 			sql_ins.setString(2, rubrica.getDescription());
 			sql_ins.setDouble(3, rubrica.getPreviousBalance());
 			sql_ins.setDouble(4, rubrica.getPreviousDebt());
-			sql_ins.setDouble(5, rubrica.getPreviousCradit());
+			sql_ins.setDouble(5, rubrica.getPreviousCredit());
 			sql_ins.setBoolean(6, rubrica.getIsPercent());
 			sql_ins.setDouble(7, rubrica.getValueChange());
 			sql_ins.setInt(8, rubrica.getYear());
