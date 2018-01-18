@@ -8,25 +8,37 @@ public class Row {
     private int code;
     private float previousBalance;
     private float previousDebt;
-    private float previousCradit;
+    private float previousCredit;
     private float currentBalance;
+    private boolean isPercent;
+    private float valueChange;
+    private int year;
+    private int month;
+    private boolean updated;
+    private boolean loaded;
 
-    public Row(String description, int code, float previousBalance, float previousDebt, float previousCradit, float currentBalance) {
-        this.description = description;
-        this.code = code;
-        this.previousBalance = previousBalance;
-        this.previousDebt = previousDebt;
-        this.previousCradit = previousCradit;
-        this.currentBalance = currentBalance;
+    public Row(String description, int code, float previousBalance, float previousDebt, float previousCredit, float currentBalance, boolean isPercent, float valueChange, int year, int month, boolean updated, boolean loaded) {
+        this.setDescription(description);
+        this.setCode(code);
+        this.setPreviousBalance(previousBalance);
+        this.setPreviousDebt(previousDebt);
+        this.setPreviousCredit(previousCredit);
+        this.setCurrentBalance(currentBalance);
+        this.setIsPercent(isPercent);
+        this.setValueChange(valueChange);
+        this.setYear(year);
+        this.setMonth(month);
+        this.setUpdated(updated);
+        this.setLoaded(loaded);
     }
 
     public Row(String[] values) {
-        this.description = values[0];
-        this.code = Integer.parseInt(StringUtils.remove(values[1], ' '));
-        this.previousBalance = Float.parseFloat(StringUtils.remove(values[2], ' ').replace(".", "").replace(',', '.'));
-        this.previousDebt = Float.parseFloat(StringUtils.remove(values[3], ' ').replace(".", "").replace(',', '.'));
-        this.previousCradit = Float.parseFloat(StringUtils.remove(values[4], ' ').replace(".", "").replace(',', '.'));
-        this.currentBalance = Float.parseFloat(StringUtils.remove(values[5], ' ').replace(".", "").replace(',', '.'));
+        this.setDescription(values[0]);
+        this.setCode( Integer.parseInt(StringUtils.remove(values[1], ' ')) );
+        this.setPreviousBalance( Float.parseFloat(StringUtils.remove(values[2], ' ').replace(".", "").replace(',', '.')) );
+        this.setPreviousDebt( Float.parseFloat(StringUtils.remove(values[3], ' ').replace(".", "").replace(',', '.')) );
+        this.setPreviousCredit( Float.parseFloat(StringUtils.remove(values[4], ' ').replace(".", "").replace(',', '.')) );
+        this.setCurrentBalance( Float.parseFloat(StringUtils.remove(values[5], ' ').replace(".", "").replace(',', '.')) );
     }
 
     public String getDescription() {
@@ -62,12 +74,12 @@ public class Row {
         this.previousDebt = previousDebt;
     }
 
-    public float getPreviousCradit() {
-        return previousCradit;
+    public float getPreviousCredit() {
+        return previousCredit;
     }
 
-    public void setPreviousCradit(float previousCradit) {
-        this.previousCradit = previousCradit;
+    public void setPreviousCredit(float previousCredit) {
+        this.previousCredit = previousCredit;
     }
 
     public float getCurrentBalance() {
@@ -78,14 +90,70 @@ public class Row {
         this.currentBalance = currentBalance;
     }
 
+    public boolean getIsPercent(){
+        return isPercent;
+    }
+
+    public void setIsPercent(boolean isPercent){
+        this.isPercent = isPercent;
+    }
+
+    public float getValueChange(){
+        return valueChange;
+    }
+    
+    public void setValueChange(float valueChange){
+        this.valueChange = valueChange;
+    }
+
+    public int getYear(){
+        return year;
+    }
+    
+    public void setYear(int year){
+        this.year = year;
+    }
+
+    public int getMonth(){
+        return month;
+    }
+    
+    public void setMonth(int month){
+        this.month = month;
+    }
+
+    public boolean getUpdated(){ 
+        return updated;
+    }
+
+    public void setUpdated(boolean updated){
+        this.updated = updated;
+    }
+
+    public boolean getLoaded(){
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded){
+        this.loaded = loaded;
+    }
+
+
     @Override
     public String toString() {
         String space = ";  ";
+
         return description + space
                 + code + space
                 + previousBalance + space
                 + previousDebt + space
-                + previousCradit + space
-                + currentBalance;
+                + previousCredit + space
+                + currentBalance + space
+                + isPercent + space
+                + valueChange + space
+                + year + space
+                + month + space
+                + updated + space
+                + loaded + space;
     }
 }
