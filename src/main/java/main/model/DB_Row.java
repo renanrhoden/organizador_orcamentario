@@ -98,6 +98,13 @@ public class DB_Row{
 
 	}
 
+	public ResultSet selectDate(int year, int month){
+		ResultSet res = null;
+
+		return res;
+
+	}
+
 	public ResultSet selectRange(DataRange range){
 
 		ResultSet res = null;
