@@ -74,7 +74,72 @@ public class DB_Row{
 
 	}
 
-	public ResultSet selectAll(){
+	public int updateRow(Row rubrica){
+		int res = 0;
+
+		try{
+			this.openConnection();
+
+			String sql_str = "UPDATE public.rubrica SET (description = ?, \"previousBalance\" = ?, \"previousDebt\" = ?, \"previousCredit\" = ?, \"isPercent\" = ?, \"valueChange\" = ?, \"currentBalance\" = ?) "
+			+ "WHERE (code = ? AND year = ? AND month = ?);";
+			
+
+			PreparedStatement sql_ins = connection.prepareStatement(sql_str);
+
+			sql_ins.setString(1, rubrica.getDescription());
+			sql_ins.setDouble(2, rubrica.getPreviousBalance());
+			sql_ins.setDouble(3, rubrica.getPreviousDebt());
+			sql_ins.setDouble(4, rubrica.getPreviousCredit());
+			sql_ins.setBoolean(5, rubrica.getIsPercent());
+			sql_ins.setDouble(6, rubrica.getValueChange());
+			sql_ins.setDouble(7, rubrica.getCurrentBalance());
+			sql_ins.setInt(8, rubrica.getCode());
+			sql_ins.setInt(9, rubrica.getYear());
+			sql_ins.setInt(10, rubrica.getMonth());
+
+			res = sql_ins.executeUpdate();
+
+			connection.commit();
+
+			this.closeConnection();
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+		}
+
+		return res;
+	}
+
+	public int deleteRow(Row rubrica){
+		int res = 0;
+
+		try{
+			this.openConnection();
+
+			String sql_str = "DELETE FROM public.rubrica "
+			+ "WHERE (code = ? AND year = ? AND month = ?);";
+			
+
+			PreparedStatement sql_ins = connection.prepareStatement(sql_str);
+
+			sql_ins.setInt(1, rubrica.getCode());
+			sql_ins.setInt(2, rubrica.getYear());
+			sql_ins.setInt(3, rubrica.getMonth());
+
+			res = sql_ins.executeUpdate();
+
+			connection.commit();
+
+			this.closeConnection();
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+		}
+
+		return res;
+	}
+
+	private ResultSet selectAllRS(){
 		ResultSet res = null;
 
 		try{
@@ -98,14 +163,35 @@ public class DB_Row{
 
 	}
 
-	public ResultSet selectDate(int year, int month){
+	private ResultSet selectDateRS(int year, int month){
 		ResultSet res = null;
+
+		try{
+			this.openConnection();
+
+			String sql_str = "SELECT (code, description, \"currentBalance\", \"previousBalance\", \"previousDebt\", \"previousCredit\", \"isPercent\", \"valueChange\", year, month) FROM rubrica "
+			+ "WHERE (year = ? AND month = ?)"
+			+ "ORDER BY year, month;";
+
+			PreparedStatement sql_qry = connection.prepareStatement(sql_str);
+
+			sql_qry.setInt(1, year);
+			sql_qry.setInt(2, month);
+
+			res = sql_qry.executeQuery();
+
+			this.closeConnection();
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+		}
 
 		return res;
 
 	}
 
-	public ResultSet selectRange(DataRange range){
+	private ResultSet selectRangeRS(DataRange range){
 
 		ResultSet res = null;
 
@@ -135,6 +221,6 @@ public class DB_Row{
 		}
 
 		return res;
-
 	}
+
 }

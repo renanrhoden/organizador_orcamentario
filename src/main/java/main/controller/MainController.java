@@ -4,6 +4,7 @@ import chart.PieChart;
 import com.opencsv.CSVReader;
 import main.model.Row;
 import main.view.Main;
+import main.model.DB_Row;
 import org.jfree.data.io.CSV;
 
 import javax.swing.*;
@@ -123,7 +124,7 @@ public class MainController implements ActionListener {
             //System.out.println("save");
             DB_Row dbrow = new DB_Row();
 
-            Row row = new Row("Dummy", 54321, 500.3, 200.1, 400.2, 700.53, true, 10.3, 2018, 11);
+            Row row = new Row("Dummy", 54321, (float)500.3, (float)200.1, (float)400.2, (float)700.53, true, (float)10.3, 2018, 11, false, false);
 
             dbrow.insertRow(row);
         }
