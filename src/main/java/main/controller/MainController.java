@@ -352,7 +352,67 @@ public class MainController implements ActionListener,TableModelListener {
         }
 
         if (actionEvent.getSource() == this.mainView.getCarregaDadosButton()){
+            ArrayList<Row> rows;
+            DB_Row dbrow = new DB_Row();
 
+            rows = dbrow.selectAll();
+
+            DefaultTableModel tm = new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual", "Porcentagem?", "Mudança de valor", "Ano", "Mês", "Atualizado?", "Carregado?"});
+                //Constrói um modelo de tabela vazia com os correspondentes nomes das colunas
+
+            tm.getColumnClass(6).getClass();
+            try {
+                for (int i = 0; i < rows.size(); i++) {
+                    Row row = rows.get(i);
+                    tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCredit(), row.getCurrentBalance(), row.getIsPercent(), row.getValueChange(), row.getYear(), row.getMonth(), row.getUpdated(), row.getLoaded()});
+                }
+
+                JTable tbl = new JTable(tm){
+                    @Override
+                    public Class getColumnClass(int column) {
+                        switch (column) {
+                            case 0:
+                            return String.class;
+                            case 1:
+                            return Integer.class;
+                            case 2:
+                            return Float.class;
+                            case 3:
+                            return Float.class;
+                            case 4:
+                            return Float.class;
+                            case 5:
+                            return Float.class;
+                            case 6:
+                            return Boolean.class;
+                            case 7:
+                            return Float.class;
+                            case 8:
+                            return Integer.class;
+                            case 9:
+                            return Integer.class;
+                            case 10:
+                            return Boolean.class;
+                            default:
+                            return Boolean.class;
+                        }
+                    }
+                };
+                tbl.setGridColor(Color.black);
+                    //TableColumnModel tcm = tbl.getColumnModel();
+                tbl.getColumnModel().removeColumn(tbl.getColumn("Ano"));
+                tbl.getColumnModel().removeColumn(tbl.getColumn("Mês"));
+                tbl.getColumnModel().removeColumn(tbl.getColumn("Atualizado?"));
+                tbl.getColumnModel().removeColumn(tbl.getColumn("Carregado?"));
+                tbl.getModel().addTableModelListener((TableModelListener) this);
+                JScrollPane sclp = new JScrollPane(tbl);
+
+
+                this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), sclp);
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
 
     }

@@ -268,17 +268,17 @@ public class DB_Row{
 			while (rs.next()){
 				res.add(
 					new Row(
-						rs.getString(2), 
-						rs.getInt(1), 
-						(float)rs.getDouble(4), 
-						(float)rs.getDouble(5), 
-						(float)rs.getDouble(6), 
-						(float)rs.getDouble(3), 
+						rs.getString(2),
+						rs.getInt(1),
+						(float)rs.getDouble(4),
+						(float)rs.getDouble(5),
+						(float)rs.getDouble(6),
+						(float)rs.getDouble(3),
 						rs.getBoolean(7),
-						(float)rs.getDouble(8), 
-						rs.getInt(9), 
-						rs.getInt(10), 
-						false, 
+						(float)rs.getDouble(8),
+						rs.getInt(9),
+						rs.getInt(10),
+						false,
 						true
 					)
 				);
@@ -290,5 +290,74 @@ public class DB_Row{
 
 		return res;
 	}
+
+    public ArrayList<Row> selectAll(){
+        ResultSet rs = null;
+        ArrayList<Row> res = new ArrayList<Row>();
+        try{
+            rs = this.selectAllRS();
+
+
+	        /*
+
+			SQL -
+
+			1 - code
+			2 - description
+			3 - currentBalance
+			4 - previousBalance
+			5 - previousDebt
+			6 - previousCredit
+			7 - isPercent
+			8 - valueChange
+			9 - year
+			10- month
+
+			*/
+
+			/*
+
+			Constructor -
+
+			2 - String description
+			1 - int code
+			4 - float previousBalance
+			5 - float previousDebt
+			6 - float previousCredit
+			3 - float currentBalance
+			7 - boolean isPercent
+			8 - float valueChange
+			9 - int year
+			10- int month
+			X - boolean updated
+			X - boolean loaded
+
+			*/
+
+            while (rs.next()){
+                res.add(
+                        new Row(
+                                rs.getString(2),
+                                rs.getInt(1),
+                                (float)rs.getDouble(4),
+                                (float)rs.getDouble(5),
+                                (float)rs.getDouble(6),
+                                (float)rs.getDouble(3),
+                                rs.getBoolean(7),
+                                (float)rs.getDouble(8),
+                                rs.getInt(9),
+                                rs.getInt(10),
+                                false,
+                                true
+                        )
+                );
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ":  " + e.getMessage());
+        }
+
+        return res;
+    }
 
 }
