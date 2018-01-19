@@ -34,8 +34,42 @@ public class Main extends JFrame{
         this.setContentPane(mainPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.tModel = new DefaultTableModel(null, new Object[]{"Nome", CODIGO, "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"});
-        this.table = new JTable(this.tModel);
+        this.tModel = new DefaultTableModel(null, new Object[]{"Nome", CODIGO, "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual", "Porcentagem?", "Mudança de valor", "Ano", "Mês", "Atualizado?", "Carregado?"});
+        this.table = new JTable(this.tModel){
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return String.class;
+                    case 1:
+                        return Integer.class;
+                    case 2:
+                        return Float.class;
+                    case 3:
+                        return Float.class;
+                    case 4:
+                        return Float.class;
+                    case 5:
+                        return Float.class;
+                    case 6:
+                        return Boolean.class;
+                    case 7:
+                        return Float.class;
+                    case 8:
+                        return Integer.class;
+                    case 9:
+                        return Integer.class;
+                    case 10:
+                        return Boolean.class;
+                    default:
+                        return Boolean.class;
+                }
+            }
+        };
+        this.table.getColumnModel().removeColumn(this.table.getColumn("Ano"));
+        this.table.getColumnModel().removeColumn(this.table.getColumn("Mês"));
+        this.table.getColumnModel().removeColumn(this.table.getColumn("Atualizado?"));
+        this.table.getColumnModel().removeColumn(this.table.getColumn("Carregado?"));
         this.setTabbedPane(this.tabbedPane);
         this.table.setGridColor(Color.black);
         this.table.setFillsViewportHeight(true);
@@ -150,4 +184,6 @@ public class Main extends JFrame{
     public JButton getCarregaDadosButton() { return carregaDadosButton; }
 
     public void setCarregaDadosButton(JButton carregaDadosButton) { this.carregaDadosButton = carregaDadosButton; }
+
+
 }

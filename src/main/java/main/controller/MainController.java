@@ -2,13 +2,17 @@ package main.controller;
 
 import chart.PieChart;
 import com.opencsv.CSVReader;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import main.model.Row;
+import main.view.AddRow;
 import main.view.Main;
 import main.model.DB_Row;
 import org.jfree.data.io.CSV;
 
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,16 +22,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
+import javax.swing.event.*;
 
 import static main.view.Main.PIE_CHART;
 
-public class MainController implements ActionListener {
+public class MainController implements ActionListener,TableModelListener {
 
 
     final JFileChooser fc = new JFileChooser();
 
     private Main mainView;
     private int tabNumber = 1;
+    public AddRow addRow = new AddRow();
+    public AddRowController addRowController = new AddRowController(addRow);
 
 
     public MainController(Main mainView) {
@@ -41,12 +48,70 @@ public class MainController implements ActionListener {
         this.mainView.getGerarTemplateButton().addActionListener(this);
         this.mainView.getRemoverAbaButton().addActionListener(this);
         this.mainView.getCarregaDadosButton().addActionListener(this);
+        this.addRow.getAddButton().addActionListener(this.addRowController);
+
+        //asd();
+
+        JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
+        JViewport v = scp.getViewport();
+        JTable t = (JTable) v.getView();
+        t.getModel().addTableModelListener((TableModelListener) this);
+
+        this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
 
 
     }
 
+    public void asd(){
+        //AddRow ar = new AddRow();
+        this.addRow = new AddRow();
+        this.addRowController = new AddRowController(this.addRow);
+
+        addRow.setVisible(true);
+/*
+        while (this.addRowController.getCount() == 0) {
+            if (this.addRowController.getCount() != 0) {
+                System.out.println(this.addRowController.getAddRowView().getAnoTextField());
+                System.out.println(this.addRowController.getAddRowView().getMesTextField());
+                addRow.setVisible(false);
+            }
+        }*/
+    }
+
+
+
+    public void tableChanged(TableModelEvent e) {
+
+
+        JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
+        JViewport v = scp.getViewport();
+        JTable t = (JTable) v.getView();
+        if (t.getSelectedRow() != -1){
+            if(t.getModel().getValueAt(t.getSelectedRow(), 10) != null){
+               if (!(Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10)) {
+                    t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+                }
+            }else{
+                t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+            }
+            this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
+        }
+
+
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
+        if (actionEvent.getSource() == this.addRow.getAddButton()){
+            System.out.println("adkjhalksjgd");
+                if(!this.addRow.getAnoTextField().getText().equals("") && !this.addRow.getMesTextField().getText().equals("")){
+                    this.addRowController.setCount(this.addRowController.getCount() + 1);
+                    System.out.println(this.addRowController.getCount());
+                }
+        }
+
         if (actionEvent.getSource() == this.mainView.getImportButton()) {
             int returnVal = fc.showOpenDialog(mainView);
 
@@ -63,8 +128,10 @@ public class MainController implements ActionListener {
                 //Read CSV line by line and use the string array as you want
                 String[] nextLine;
 
-                DefaultTableModel tm = new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"});
+                DefaultTableModel tm = new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual", "Porcentagem?", "Mudança de valor", "Ano", "Mês", "Atualizado?", "Carregado?"});
                 //Constrói um modelo de tabela vazia com os correspondentes nomes das colunas
+
+                tm.getColumnClass(6).getClass();
                 try {
                     while ((nextLine = reader.readNext()) != null) {
                         if (nextLine != null) {
@@ -76,21 +143,53 @@ public class MainController implements ActionListener {
                                 CSVData.getInstance().getData().add(row);
 
                                 //Adiciona uma linha na tabela
-                                tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCredit(), row.getCurrentBalance()});
+                                tm.addRow(new Object[]{row.getDescription(), row.getCode(), row.getPreviousBalance(), row.getPreviousDebt(), row.getPreviousCredit(), row.getCurrentBalance(), new Boolean(false), null, null, null, false, false});
                             }
                         }
 
 
                     }
 
-                    //this.mainView.settModel(tm);
-                    //this.mainView.setTable(new JTable(this.mainView.gettModel()));
-                    //this.mainView.getTable().setGridColor(Color.black);
-                    //this.mainView.getTable().setFillsViewportHeight(true);
-                    //this.mainView.getScrollP().setViewportView(this.mainView.getTable());
 
-                    JTable tbl = new JTable(tm);
+
+                    JTable tbl = new JTable(tm){
+                        @Override
+                        public Class getColumnClass(int column) {
+                            switch (column) {
+                                case 0:
+                                    return String.class;
+                                case 1:
+                                    return Integer.class;
+                                case 2:
+                                    return Float.class;
+                                case 3:
+                                    return Float.class;
+                                case 4:
+                                    return Float.class;
+                                case 5:
+                                    return Float.class;
+                                case 6:
+                                    return Boolean.class;
+                                case 7:
+                                    return Float.class;
+                                case 8:
+                                    return Integer.class;
+                                case 9:
+                                    return Integer.class;
+                                case 10:
+                                    return Boolean.class;
+                                default:
+                                    return Boolean.class;
+                            }
+                        }
+                    };
                     tbl.setGridColor(Color.black);
+                    //TableColumnModel tcm = tbl.getColumnModel();
+                    tbl.getColumnModel().removeColumn(tbl.getColumn("Ano"));
+                    tbl.getColumnModel().removeColumn(tbl.getColumn("Mês"));
+                    tbl.getColumnModel().removeColumn(tbl.getColumn("Atualizado?"));
+                    tbl.getColumnModel().removeColumn(tbl.getColumn("Carregado?"));
+                    tbl.getModel().addTableModelListener((TableModelListener) this);
                     JScrollPane sclp = new JScrollPane(tbl);
 
 
@@ -113,10 +212,8 @@ public class MainController implements ActionListener {
 
             if (t.getSelectedRow() != -1) {
                 ((DefaultTableModel) t.getModel()).insertRow(t.getSelectedRow() + 1, (Object[]) null);
-                //this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             } else {
                 ((DefaultTableModel) t.getModel()).addRow((Object[]) null);
-                //this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             }
 
 
@@ -131,14 +228,12 @@ public class MainController implements ActionListener {
             JTable t = (JTable) v.getView();
             if (t.getSelectedRow() != -1) {
                 ((DefaultTableModel) t.getModel()).removeRow(t.getSelectedRow());
-                //this.mainView.settModel((DefaultTableModel) (this.mainView.getTable().getModel()));
             }
             this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
         }
 
         if (actionEvent.getSource() == this.mainView.getSaveButton()) {
             //IMPLEMENTAR AQUI A LÓGICA PARA SALVAR
-            //System.out.println("save");
             DB_Row dbrow = new DB_Row();
             ArrayList<Row> rows;
 
@@ -183,8 +278,45 @@ public class MainController implements ActionListener {
 
         if(actionEvent.getSource() == this.mainView.getNovaAbaButton()){
             this.tabNumber++;
-            JTable t = new JTable(new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual"}));
+            JTable t = new JTable(new DefaultTableModel(null, new Object[]{"Nome", "Código", "Balanço Anterior", "Débito Anterior", "Crédito Anterior", "Balanço Atual", "Porcentagem?", "Mudança de valor", "Ano", "Mês", "Atualizado?", "Carregado?"}))
+            {
+                @Override
+                public Class getColumnClass(int column) {
+                    switch (column) {
+                        case 0:
+                            return String.class;
+                        case 1:
+                            return Integer.class;
+                        case 2:
+                            return Float.class;
+                        case 3:
+                            return Float.class;
+                        case 4:
+                            return Float.class;
+                        case 5:
+                            return Float.class;
+                        case 6:
+                            return Boolean.class;
+                        case 7:
+                            return Float.class;
+                        case 8:
+                            return Integer.class;
+                        case 9:
+                            return Integer.class;
+                        case 10:
+                            return Boolean.class;
+                        default:
+                            return Boolean.class;
+                    }
+                }
+            };
             t.setGridColor(Color.black);
+            t.getModel().addTableModelListener((TableModelListener) this);
+            t.getColumnModel().removeColumn(t.getColumn("Ano"));
+            t.getColumnModel().removeColumn(t.getColumn("Mês"));
+            t.getColumnModel().removeColumn(t.getColumn("Atualizado?"));
+            t.getColumnModel().removeColumn(t.getColumn("Carregado?"));
+
             JScrollPane scrlp = new JScrollPane(t);
             this.mainView.getTabbedPane().addTab("Tabela "+ this.tabNumber,scrlp);
         }
@@ -217,4 +349,5 @@ public class MainController implements ActionListener {
         }
 
     }
+
 }
