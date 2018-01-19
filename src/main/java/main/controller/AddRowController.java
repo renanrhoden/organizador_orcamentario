@@ -23,7 +23,7 @@ public class AddRowController implements ActionListener{
         if(e.getSource() == this.getAddRowView().getAddButton()){
             if(!this.addRowView.getAnoTextField().getText().equals("") && !this.addRowView.getMesTextField().getText().equals("")){
                 this.setCount(this.getCount() + 1);
-                System.out.println(this.getCount());
+                //System.out.println(this.getCount());
             }
         }
 

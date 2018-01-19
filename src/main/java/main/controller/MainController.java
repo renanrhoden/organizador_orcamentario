@@ -33,8 +33,8 @@ public class MainController implements ActionListener,TableModelListener {
 
     private Main mainView;
     private int tabNumber = 1;
-    public AddRow addRow = new AddRow();
-    public AddRowController addRowController = new AddRowController(addRow);
+    private AddRow addRow = new AddRow();
+    private AddRowController addRowController = new AddRowController(addRow);
 
 
     public MainController(Main mainView) {
@@ -48,9 +48,9 @@ public class MainController implements ActionListener,TableModelListener {
         this.mainView.getGerarTemplateButton().addActionListener(this);
         this.mainView.getRemoverAbaButton().addActionListener(this);
         this.mainView.getCarregaDadosButton().addActionListener(this);
-        this.addRow.getAddButton().addActionListener(this.addRowController);
 
-        //asd();
+
+        showYearWindow();
 
         JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
         JViewport v = scp.getViewport();
@@ -62,20 +62,31 @@ public class MainController implements ActionListener,TableModelListener {
 
     }
 
-    public void asd(){
-        //AddRow ar = new AddRow();
+    public void showYearWindow(){
         this.addRow = new AddRow();
         this.addRowController = new AddRowController(this.addRow);
 
+        addRow.setAlwaysOnTop(true);
+        addRow.setLocationByPlatform(true);
+        addRow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         addRow.setVisible(true);
-/*
-        while (this.addRowController.getCount() == 0) {
-            if (this.addRowController.getCount() != 0) {
-                System.out.println(this.addRowController.getAddRowView().getAnoTextField());
-                System.out.println(this.addRowController.getAddRowView().getMesTextField());
-                addRow.setVisible(false);
+
+        ActionListener a = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!addRow.getAnoTextField().getText().equals("") && !addRow.getMesTextField().getText().equals("")){
+                    addRowController.setCount(addRowController.getCount() + 1);
+                    //System.out.println(addRowController.getCount());
+                    System.out.println(addRowController.getAddRowView().getAnoTextField().getText());
+                    System.out.println(addRowController.getAddRowView().getMesTextField().getText());
+                    addRow.setVisible(false);
+                }
             }
-        }*/
+        };
+
+        addRow.getAddButton().addActionListener(a);
+        
     }
 
 
@@ -104,13 +115,6 @@ public class MainController implements ActionListener,TableModelListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        if (actionEvent.getSource() == this.addRow.getAddButton()){
-            System.out.println("adkjhalksjgd");
-                if(!this.addRow.getAnoTextField().getText().equals("") && !this.addRow.getMesTextField().getText().equals("")){
-                    this.addRowController.setCount(this.addRowController.getCount() + 1);
-                    System.out.println(this.addRowController.getCount());
-                }
-        }
 
         if (actionEvent.getSource() == this.mainView.getImportButton()) {
             int returnVal = fc.showOpenDialog(mainView);
@@ -192,6 +196,7 @@ public class MainController implements ActionListener,TableModelListener {
                     tbl.getModel().addTableModelListener((TableModelListener) this);
                     JScrollPane sclp = new JScrollPane(tbl);
 
+                    showYearWindow();
 
                     this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), sclp);
 
@@ -316,6 +321,8 @@ public class MainController implements ActionListener,TableModelListener {
             t.getColumnModel().removeColumn(t.getColumn("Mês"));
             t.getColumnModel().removeColumn(t.getColumn("Atualizado?"));
             t.getColumnModel().removeColumn(t.getColumn("Carregado?"));
+
+            showYearWindow();
 
             JScrollPane scrlp = new JScrollPane(t);
             this.mainView.getTabbedPane().addTab("Tabela "+ this.tabNumber,scrlp);
