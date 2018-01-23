@@ -26,7 +26,7 @@ import javax.swing.event.*;
 
 import static main.view.Main.PIE_CHART;
 
-public class MainController implements ActionListener,TableModelListener {
+public class MainController implements ActionListener,TableModelListener, CellEditorListener {
 
 
     final JFileChooser fc = new JFileChooser();
@@ -92,22 +92,24 @@ public class MainController implements ActionListener,TableModelListener {
 
 
     public void tableChanged(TableModelEvent e) {
-
+/*
 
         JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
         JViewport v = scp.getViewport();
         JTable t = (JTable) v.getView();
-        if (t.getSelectedRow() != -1){
-            if(t.getModel().getValueAt(t.getSelectedRow(), 10) != null){
-               if (!(Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10)) {
-                    t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
-                }
-            }else{
-                t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+        if (t.getModel() != null) {
+            if (t.getSelectedRow() != -1) {
+                System.out.println("HADOUKEN");
+               // if (t.getModel().getValueAt(t.getSelectedRow(), 10) != null) {
+                    /*if (!(Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10)) {
+                        t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+                    }
+                //} //else if (t.getSelectedRow() != -1){
+                    //t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+                //}
+                //this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
             }
-            this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
-        }
-
+        }*/
 
     }
 
@@ -187,6 +189,7 @@ public class MainController implements ActionListener,TableModelListener {
                             }
                         }
                     };
+
                     tbl.setGridColor(Color.black);
                     //TableColumnModel tcm = tbl.getColumnModel();
                     tbl.getColumnModel().removeColumn(tbl.getColumn("Ano"));
@@ -316,11 +319,34 @@ public class MainController implements ActionListener,TableModelListener {
                 }
             };
             t.setGridColor(Color.black);
-            t.getModel().addTableModelListener((TableModelListener) this);
+            //t.getModel().addTableModelListener((TableModelListener) this);
             t.getColumnModel().removeColumn(t.getColumn("Ano"));
             t.getColumnModel().removeColumn(t.getColumn("Mês"));
             t.getColumnModel().removeColumn(t.getColumn("Atualizado?"));
             t.getColumnModel().removeColumn(t.getColumn("Carregado?"));
+            t.getCellEditor().addCellEditorListener(new CellEditorListener() {
+                @Override
+                public void editingStopped(ChangeEvent e) {
+                    //JScrollPane scp = (JScrollPane) (mainView.getTabbedPane().getComponentAt(mainView.getTabbedPane().getSelectedIndex()));
+                    //JViewport v = scp.getViewport();
+                    //JTable t = (JTable) v.getView();
+                    //if (!t.isEditing()) {
+                    if (t.getSelectedRow() != -1) {
+                        //if (!(Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10)) {
+                        t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+                        System.out.println("alsdasd");
+                        //mainView.getTabbedPane().setComponentAt(mainView.getTabbedPane().getSelectedIndex(), scp);
+
+                        // }
+                        //System.out.println((Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10));
+                        //}
+                    }
+                }
+                @Override
+                public void editingCanceled(ChangeEvent e) {
+
+                }
+            });
 
             showYearWindow();
 
@@ -417,4 +443,24 @@ public class MainController implements ActionListener,TableModelListener {
 
     }
 
+    @Override
+    public void editingStopped(ChangeEvent e) {
+        JScrollPane scp = (JScrollPane)(this.mainView.getTabbedPane().getComponentAt(this.mainView.getTabbedPane().getSelectedIndex()));
+        JViewport v = scp.getViewport();
+        JTable t = (JTable) v.getView();
+        //if (!t.isEditing()) {
+            if (!(Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10)) {
+                t.getModel().setValueAt(new Boolean(true), t.getSelectedRow(), 10);
+                System.out.println("alsdasd");
+                this.mainView.getTabbedPane().setComponentAt(this.mainView.getTabbedPane().getSelectedIndex(), scp);
+
+           // }
+            System.out.println((Boolean) t.getModel().getValueAt(t.getSelectedRow(), 10));
+        }
+    }
+
+    @Override
+    public void editingCanceled(ChangeEvent e) {
+
+    }
 }
